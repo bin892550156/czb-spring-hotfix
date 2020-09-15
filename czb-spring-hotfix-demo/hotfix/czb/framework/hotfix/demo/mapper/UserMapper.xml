@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="czb.framework.hotfix.demo.mapper.UserMapper">
+
+    <resultMap id="userResultMap" type="czb.framework.hotfix.demo.entity.User">
+        <id property="id" column="id" />
+        <result property="name" column="name" />
+    </resultMap>
+
+    <parameterMap id="userParamterMap" type="czb.framework.hotfix.demo.entity.User">
+        <parameter property="id" />
+    </parameterMap>
+
+    <!-- 查询未读的消息，每次显示6条 -->
+    <select id="getUser" parameterType="czb.framework.hotfix.demo.entity.User" resultType="czb.framework.hotfix.demo.entity.User">
+        select id,'HOT_FIX' name,age
+        from user
+        where id = #{user.id}
+        <if test="user.name != null ">
+            and name = #{user.name}
+        </if>
+        <if test="user.age != null ">
+            and age = #{user.age}
+        </if>
+    </select>
+
+</mapper>
