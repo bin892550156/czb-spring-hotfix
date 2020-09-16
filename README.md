@@ -105,7 +105,8 @@ Controller调用，这是不支持的。但是想在Service层接口实现类上
 ## Mapper层支持新增接口方法吗？
 其实支持的，因为mybatis并不是直接调用接口方法，而是通过代理类进行调用到指定的 Configuration 管理的 MappedStatement 对象，所以
 新增的接口方法可以注册到 Configuration 中的，但是由于 基本原则 原因，导致 调用Mapper层对象中并没有这个新增的热修复方法从而报错，
-你可以通过 SqlSessionTemplate 指定该新增的热修复方法的 MappedStatement Id 从而调用到新MappedStatement对象中。
+你可以通过 SqlSessionTemplate 指定该新增的热修复方法的 MappedStatement Id 从而调用到新MappedStatement对象中。还不是很理解的
+读者，请看博客：[https://blog.csdn.net/qq_30321211/article/details/108605484](https://blog.csdn.net/qq_30321211/article/details/108605484)
 ## 该框架为啥没有安全方面的控制呢？
 因为本框架所实现的功能本来就是不安全的，我并不打算考虑安全的问题，安全问题交给调用者吧，所以调用者要考虑到使用该框架时会出现的一系列
 安全问题。
