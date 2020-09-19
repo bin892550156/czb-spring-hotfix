@@ -2,6 +2,8 @@ package czb.framework.hotfix.core.classloader;
 
 import czb.framework.hotfix.core.config.HotFixParams;
 import czb.framework.hotfix.core.exception.HotFixException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
@@ -20,6 +22,8 @@ import java.util.Map;
  * @author chenzhuobin
  */
 public class HotFixClassLoader extends ClassLoader{
+
+    private Logger log= LoggerFactory.getLogger(HotFixClassLoader.class);
 
     /**
      * 热修复参数配置
@@ -101,6 +105,8 @@ public class HotFixClassLoader extends ClassLoader{
      */
     private static class InnerHotFixClassLoader extends ClassLoader{
 
+        private Logger log= LoggerFactory.getLogger(InnerHotFixClassLoader.class);
+
         /**
          * 热修复参数配置
          */
@@ -150,7 +156,9 @@ public class HotFixClassLoader extends ClassLoader{
             } catch (IOException e) {
                throw new HotFixException(" load class File "+classPathFile.getAbsolutePath()+" fail",e);
             } catch (NoClassDefFoundError e){
-                e.printStackTrace();
+                if(log.isWarnEnabled()){
+                    log.warn("throw NoClassDefFoundError cause [{}] depend [{}],but maybe can use parent classLoader load this",className,e.getMessage());
+                }
                 //有可能是 新热修复类，所以尝试使用父级ClassLoader进行加载，只有通过父级ClassLoader加载才能
                 // 使得 该类加载器找到该热修复类。
                 getClassDataToParent(hotFixParams.getLoadPath()+e.getMessage()+".class");

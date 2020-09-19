@@ -61,6 +61,9 @@ public class HotFix implements ApplicationContextAware {
      * 启动热修复
      */
     public void exec(){
+        if(log.isInfoEnabled()){
+            log.info(" hotfix start ... ");
+        }
         Properties properties = loadHofixClassMapProp();
         DefaultListableBeanFactory beanFactory = getBeanFactory();
         //加载需要热部署的类加载器
@@ -87,6 +90,9 @@ public class HotFix implements ApplicationContextAware {
         }
         //热修复的类有可能会有互相依赖的情况，这里对依赖的属性覆盖成热修复的类
         refHotFixObj(hotFixMap,properties,hotFixClassNameList);
+        if(log.isInfoEnabled()){
+            log.info(" hotfix complete ... ");
+        }
     }
 
     @Override
