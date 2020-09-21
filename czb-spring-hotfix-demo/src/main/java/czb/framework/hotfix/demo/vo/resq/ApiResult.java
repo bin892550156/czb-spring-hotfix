@@ -27,9 +27,13 @@ public class ApiResult<T> {
     }
 
     public static <T> ApiResult<T> fail(){
+       return fail("FAIL");
+    }
+
+    public static <T> ApiResult<T> fail(String msg){
         ApiResult<T> apiResult = new ApiResult<>();
         apiResult.setCode(1);
-        apiResult.setMsg("FAIL");
+        apiResult.setMsg(msg);
         return apiResult;
     }
 

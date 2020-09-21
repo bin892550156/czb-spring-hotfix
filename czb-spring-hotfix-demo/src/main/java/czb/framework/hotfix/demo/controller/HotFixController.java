@@ -9,11 +9,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HotFixController {
 
-    @Autowired
+    @Autowired(required = false)
     HotFix hotFix;
 
     @PutMapping("/hotfix")
     public ApiResult hotfix(){
+        if(hotFix==null) return ApiResult.fail("未开启热修复");
         //启动热修复
         hotFix.exec();
         return ApiResult.success();
