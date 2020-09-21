@@ -59,7 +59,7 @@ Mybatis 将解析到 Mapper层的接口注解信息，以及Mapper.xml的配置�
 用于 在热修复类互相依赖的情况下，对依赖属性【即Class # Field】覆盖成热修复类时找出对应的热修复实现类。如果该文件
 不存在时，遇到这种情况，默认是获取依赖属性class类名修改成常规实现类名获取
 【如：czb.framework.hotfix.demo.service.UserService 默认改成 czb.framework.hotfix.demo.service.impl.UserServiceImpl】
-## maven 配置
+### maven 配置
 该项目并没有放到maven的仓库，所以需要拉取本项目，在根目录下执行 `mvn clean install`.
 ```xml
        <dependency>
@@ -68,7 +68,7 @@ Mybatis 将解析到 Mapper层的接口注解信息，以及Mapper.xml的配置�
             <version>1.0-SNAPSHOT</version>
         </dependency>
 ```
-## yml配置
+### yml配置
 ```yaml
 # 热修复
 hotFix:
