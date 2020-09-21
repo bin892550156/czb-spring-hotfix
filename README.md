@@ -65,16 +65,16 @@ public class HotFixConfig {
 
     @Bean
     public HotFix hotFix(){
-        HotFixParams hotFixParams=new HotFixParams();
+        HotFixParams hotFixProperties=new HotFixParams();
         //本地文件加载地址
-        hotFixParams.setLoadPath("E:\\Project\\Java\\OpenSource\\czb-spring-hotfix\\czb-spring-hotfix-demo\\hotfix");
+        hotFixProperties.setLoadPath("E:\\Project\\Java\\OpenSource\\czb-spring-hotfix\\czb-spring-hotfix-demo\\hotfix");
         //基础包名
-        hotFixParams.setBasePackage("czb.framework.hotfix.demo");
+        hotFixProperties.setBasePackage("czb.framework.hotfix.demo");
         //需要加载到AppClassLoader【父级ClassLoader】的包名
-        hotFixParams.setShouldLoadInAppClassLoaderPackage(Arrays.asList(
+        hotFixProperties.setShouldLoadInAppClassLoaderPackage(Arrays.asList(
                 "czb.framework.hotfix.demo.entity",
                 "czb.framework.hotfix.demo.vo.resq"));
-        return new HotFix(hotFixParams);
+        return new HotFix(hotFixProperties);
     }
 }
 ```

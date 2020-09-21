@@ -35,3 +35,11 @@ mybatis-plus:
     cache-enabled: false
     call-setters-on-nulls: true
 
+# 热修复
+hotFix:
+  enable: true
+  base-package: czb.framework.hotfix.demo
+  load-path: E:\Project\Java\OpenSource\czb-spring-hotfix\czb-spring-hotfix-demo\hotfix
+  should-load-in-app-classLoader-package:
+    - czb.framework.hotfix.demo.entity
+    - czb.framework.hotfix.demo.vo.resq

@@ -1,6 +1,6 @@
 package czb.framework.hotfix.core.strategy.impl;
 
-import czb.framework.hotfix.core.config.HotFixParams;
+import czb.framework.hotfix.core.config.HotFixProperties;
 import czb.framework.hotfix.core.strategy.HotFixBeanGenerator;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 
@@ -31,10 +31,10 @@ public class DefaultHotFixBeanGenerator implements HotFixBeanGenerator {
      * 新建一个 MybatisHotFixBeanGenerator 对象
      * @param beanFactory 当前应用上下文的Bean工厂
      */
-    public DefaultHotFixBeanGenerator(DefaultListableBeanFactory beanFactory, HotFixParams hotFixParams) {
+    public DefaultHotFixBeanGenerator(DefaultListableBeanFactory beanFactory, HotFixProperties hotFixProperties) {
         this.beanFactory=beanFactory;
         hotFixBeanGenerators=new ArrayList<>();
-        loadHotFixBeanGenerators(beanFactory,hotFixParams);
+        loadHotFixBeanGenerators(beanFactory, hotFixProperties);
     }
 
 
@@ -71,10 +71,10 @@ public class DefaultHotFixBeanGenerator implements HotFixBeanGenerator {
     /**
      * 加载默认的 热修复Bean对象生成器
      * @param beanFactory bean工厂
-     * @param hotFixParams 热修复参数配置
+     * @param hotFixProperties 热修复参数配置
      */
-    private void loadHotFixBeanGenerators(DefaultListableBeanFactory beanFactory, HotFixParams hotFixParams){
-        hotFixBeanGenerators.add(new MybatisHotFixBeanGenerator(beanFactory,hotFixParams));
+    private void loadHotFixBeanGenerators(DefaultListableBeanFactory beanFactory, HotFixProperties hotFixProperties){
+        hotFixBeanGenerators.add(new MybatisHotFixBeanGenerator(beanFactory, hotFixProperties));
         hotFixBeanGenerators.add(new ControllerHofFixBeanGenerator(beanFactory));
         hotFixBeanGenerators.add(new CommonHotFixBeanGenerator(beanFactory));
     }

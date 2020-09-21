@@ -1,7 +1,7 @@
 package czb.framework.hotfix.core;
 
 import czb.framework.hotfix.core.classloader.HotFixClassLoader;
-import czb.framework.hotfix.core.config.HotFixParams;
+import czb.framework.hotfix.core.config.HotFixProperties;
 import czb.framework.hotfix.core.exception.HotFixException;
 import czb.framework.hotfix.core.helper.RefNewBeanHelper;
 import czb.framework.hotfix.core.strategy.HotFixBeanGenerator;
@@ -36,7 +36,7 @@ public class HotFix implements ApplicationContextAware {
     /**
      * 热修复参数配置
      */
-    private HotFixParams hotFixParams;
+    private HotFixProperties hotFixProperties;
 
     /**
      * 引用新 Bean 对象【热修复 Bean 对象】到依赖该原 Bean 对象的 Bean 对象 的帮助类
@@ -50,10 +50,10 @@ public class HotFix implements ApplicationContextAware {
 
     /**
      * 新建一个 HotFix 实例，建议使用配置成单例Bean对象。
-     * @param hotFixParams 热修复参数配置
+     * @param hotFixProperties 热修复参数配置
      */
-    public HotFix(HotFixParams hotFixParams) {
-        this.hotFixParams = hotFixParams;
+    public HotFix(HotFixProperties hotFixProperties) {
+        this.hotFixProperties = hotFixProperties;
         this.refNewBeanHelper=new RefNewBeanHelper();
     }
 
@@ -67,7 +67,7 @@ public class HotFix implements ApplicationContextAware {
         Properties properties = loadHofixClassMapProp();
         DefaultListableBeanFactory beanFactory = getBeanFactory();
         //加载需要热部署的类加载器
-        HotFixClassLoader hotFixClassLoader=new HotFixClassLoader(HotFix.class.getClassLoader(), hotFixParams);
+        HotFixClassLoader hotFixClassLoader=new HotFixClassLoader(HotFix.class.getClassLoader(), hotFixProperties);
         //需要热修复的类的类名集合
         Set<String> hotFixClassNameList = hotFixClassLoader.getClassLoaderMap().keySet();
         //存放 实例化后的需要热修复的Bean映射关系，key=hotFixBeanName,value=hotFixBeanName对应的已经初始化的Bean
@@ -156,7 +156,7 @@ public class HotFix implements ApplicationContextAware {
      */
     private HotFixBeanGenerator getHotFixBeanGenerator(DefaultListableBeanFactory beanFactory){
         if(hotFixBeanGenerator==null){
-            hotFixBeanGenerator=new DefaultHotFixBeanGenerator(beanFactory,hotFixParams);
+            hotFixBeanGenerator=new DefaultHotFixBeanGenerator(beanFactory, hotFixProperties);
         }
         return hotFixBeanGenerator;
     }
@@ -165,7 +165,7 @@ public class HotFix implements ApplicationContextAware {
      * 获取 抽象/接口类名 - 实现类名 的映射 properties文件
      */
     private Properties loadHofixClassMapProp(){
-        String loadPath = hotFixParams.getLoadPath()+"hofix-class-map.properties";
+        String loadPath = hotFixProperties.getLoadPath()+"hofix-class-map.properties";
         try {
             InputStream inputStream = new BufferedInputStream(new FileInputStream(new File(loadPath)));
             Properties prop = new Properties();

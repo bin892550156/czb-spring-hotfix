@@ -2,7 +2,7 @@ package czb.framework.hotfix.core;
 
 
 import czb.framework.hotfix.core.classloader.HotFixClassLoader;
-import czb.framework.hotfix.core.config.HotFixParams;
+import czb.framework.hotfix.core.config.HotFixProperties;
 import czb.framework.hotfix.core.exception.HotFixException;
 import czb.framework.hotfix.core.service.BinService;
 import czb.framework.hotfix.core.service.CzbService;
@@ -15,10 +15,10 @@ import java.util.List;
 
 public class HotFixClassLoaderTest {
 
-    private HotFixParams hotFixParams;
+    private HotFixProperties hotFixParams;
 
     public HotFixClassLoaderTest(){
-        hotFixParams =new HotFixParams();
+        hotFixParams =new HotFixProperties();
         hotFixParams.setBasePackage("czb.framework.hotfix.core");
         hotFixParams.setLoadPath("E:\\Project\\Java\\OpenSource\\czb-spring-hotfix\\czb-spring-hotfix-core\\hotfix\\");
     }

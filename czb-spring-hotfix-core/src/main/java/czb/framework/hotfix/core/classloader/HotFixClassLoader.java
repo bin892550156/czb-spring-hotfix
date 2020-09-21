@@ -1,6 +1,6 @@
 package czb.framework.hotfix.core.classloader;
 
-import czb.framework.hotfix.core.config.HotFixParams;
+import czb.framework.hotfix.core.config.HotFixProperties;
 import czb.framework.hotfix.core.exception.HotFixException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +28,7 @@ public class HotFixClassLoader extends ClassLoader{
     /**
      * 热修复参数配置
      */
-    private HotFixParams hotFixParams;
+    private HotFixProperties hotFixProperties;
 
     /**
      * ClassLoader映射【key=热修复类名,value= InnerHotFixClassLoader 对象】
@@ -47,13 +47,13 @@ public class HotFixClassLoader extends ClassLoader{
     /**
      * 新建一个 {@link HotFixClassLoader} 对象
      * @param classLoader 父级类记载器
-     * @param hotFixParams 热修复参数配置
+     * @param hotFixProperties 热修复参数配置
      */
-    public HotFixClassLoader(ClassLoader classLoader, HotFixParams hotFixParams ) {
+    public HotFixClassLoader(ClassLoader classLoader, HotFixProperties hotFixProperties) {
         super(classLoader);
         parent=classLoader;
-        File classLocalPath = new File(hotFixParams.getLoadPath());
-        this.hotFixParams = hotFixParams;
+        File classLocalPath = new File(hotFixProperties.getLoadPath());
+        this.hotFixProperties = hotFixProperties;
         recursionClassFile(classLocalPath);
     }
 
@@ -69,7 +69,7 @@ public class HotFixClassLoader extends ClassLoader{
                 recursionClassFile(file);
             }
         } else if (classLocalPath.isFile() && classLocalPath.getName().endsWith(".class") ) {
-            InnerHotFixClassLoader classLoader=new InnerHotFixClassLoader(hotFixParams,classLocalPath,parent);
+            InnerHotFixClassLoader classLoader=new InnerHotFixClassLoader(hotFixProperties,classLocalPath,parent);
             classLoaderMap.put(classLoader.getClassName(),classLoader);
         }
     }
@@ -110,7 +110,7 @@ public class HotFixClassLoader extends ClassLoader{
         /**
          * 热修复参数配置
          */
-        private HotFixParams hotFixParams;
+        private HotFixProperties hotFixProperties;
 
         /**
          * 类名
@@ -123,14 +123,14 @@ public class HotFixClassLoader extends ClassLoader{
         private ClassLoader parent;
         /**
          * 新建一个 InnerHotFixClassLoader 对象
-         * @param hotFixParams 热修复参数配置
+         * @param hotFixProperties 热修复参数配置
          * @param classPathFile 热修复类文件
          * @param parent 父级类加载器
          */
-        public InnerHotFixClassLoader(HotFixParams hotFixParams, File classPathFile, ClassLoader parent){
+        public InnerHotFixClassLoader(HotFixProperties hotFixProperties, File classPathFile, ClassLoader parent){
             super(parent);
             this.parent=parent;
-            this.hotFixParams=hotFixParams;
+            this.hotFixProperties = hotFixProperties;
             getClassData(classPathFile);
         }
         /**
@@ -161,7 +161,7 @@ public class HotFixClassLoader extends ClassLoader{
                 }
                 //有可能是 新热修复类，所以尝试使用父级ClassLoader进行加载，只有通过父级ClassLoader加载才能
                 // 使得 该类加载器找到该热修复类。
-                getClassDataToParent(hotFixParams.getLoadPath()+e.getMessage()+".class");
+                getClassDataToParent(hotFixProperties.getLoadPath()+e.getMessage()+".class");
                 getClassData(classPathFile);
             }
         }
@@ -171,7 +171,7 @@ public class HotFixClassLoader extends ClassLoader{
          * @param className 类名
          */
         private boolean shouldLoadInAppClassLoader(String className){
-            List<String> shouldLoadInAppClassLoaderPackages = hotFixParams.getShouldLoadInAppClassLoaderPackage();
+            List<String> shouldLoadInAppClassLoaderPackages = hotFixProperties.getShouldLoadInAppClassLoaderPackage();
             if(shouldLoadInAppClassLoaderPackages==null) return false;
             int lastDotIndex=className.lastIndexOf(".");
             String packageName = className.substring(0, lastDotIndex);
@@ -236,7 +236,7 @@ public class HotFixClassLoader extends ClassLoader{
          */
         public String getClassName(File classPathFile) {
             String dirPath = classPathFile.getParent();
-            String loadPath = hotFixParams.getLoadPath();
+            String loadPath = hotFixProperties.getLoadPath();
             String packagePath=dirPath.replace(loadPath,"");
             if ("".equals(packagePath)) {
                 throw new HotFixException(" please set package name path ! classPathFile = "+classPathFile.toString());

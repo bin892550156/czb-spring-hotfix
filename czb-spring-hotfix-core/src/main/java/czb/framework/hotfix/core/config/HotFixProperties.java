@@ -1,13 +1,20 @@
 package czb.framework.hotfix.core.config;
 
+import org.springframework.boot.context.properties.ConfigurationProperties;
+
 import java.io.File;
 import java.util.List;
 
 /**
  * 热修复参数配置
  */
-public class HotFixParams {
+@ConfigurationProperties("hotfix")
+public class HotFixProperties {
 
+    /**
+     * 是否开启热修复
+     */
+    private Boolean enable=false;
     /**
      * 基础包名
      */
@@ -61,5 +68,13 @@ public class HotFixParams {
 
     public void setLoadPath(String loadPath) {
         this.loadPath = loadPath;
+    }
+
+    public Boolean getEnable() {
+        return enable;
+    }
+
+    public void setEnable(Boolean enable) {
+        this.enable = enable;
     }
 }

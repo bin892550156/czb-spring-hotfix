@@ -1,7 +1,7 @@
 package czb.framework.hotfix.core.strategy.impl;
 
 import com.baomidou.mybatisplus.core.MybatisMapperAnnotationBuilder;
-import czb.framework.hotfix.core.config.HotFixParams;
+import czb.framework.hotfix.core.config.HotFixProperties;
 import czb.framework.hotfix.core.exception.HotFixException;
 import czb.framework.hotfix.core.helper.RefNewBeanHelper;
 import czb.framework.hotfix.core.strategy.HotFixBeanGenerator;
@@ -65,7 +65,7 @@ public class MybatisHotFixBeanGenerator implements HotFixBeanGenerator {
     /**
      * 热修复参数配置
      */
-    private HotFixParams hotFixParams;
+    private HotFixProperties hotFixProperties;
 
     /**
      * MyBatis的主类名，用于判断是否有加载Mybatis的依赖
@@ -81,9 +81,9 @@ public class MybatisHotFixBeanGenerator implements HotFixBeanGenerator {
      * 新建一个 MybatisHotFixBeanGenerator 对象
      * @param beanFactory 当前应用上下文的Bean工厂
      */
-    public MybatisHotFixBeanGenerator(DefaultListableBeanFactory beanFactory, HotFixParams hotFixParams) {
+    public MybatisHotFixBeanGenerator(DefaultListableBeanFactory beanFactory, HotFixProperties hotFixProperties) {
         this.beanFactory=beanFactory;
-        this.hotFixParams=hotFixParams;
+        this.hotFixProperties = hotFixProperties;
         try {
             getClass().getClassLoader().loadClass(MYBATIS_MAIN_CLASS);
             isDependentMyBatis=true;
@@ -184,7 +184,7 @@ public class MybatisHotFixBeanGenerator implements HotFixBeanGenerator {
     private void loadXmlMapper(Class<?> hotFixBeanClass,Configuration configuration){
         String xmlResource= generateXmlMapper(hotFixBeanClass);
         try {
-            FileInputStream fin=new FileInputStream(new File(hotFixParams.getLoadPath()+xmlResource));
+            FileInputStream fin=new FileInputStream(new File(hotFixProperties.getLoadPath()+xmlResource));
             XMLMapperBuilder xmlParser = new XMLMapperBuilder(fin, configuration, xmlResource, configuration.getSqlFragments(), hotFixBeanClass.getName());
             xmlParser.parse();
         } catch (FileNotFoundException e) {

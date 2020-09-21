@@ -11,6 +11,7 @@
     <modules>
         <module>czb-spring-hotfix-demo</module>
         <module>czb-spring-hotfix-core</module>
+        <module>czb-spring-hotfix-starter</module>
     </modules>
 
 
@@ -48,12 +49,5 @@
         </dependency>
     </dependencies>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
+
 </project>
