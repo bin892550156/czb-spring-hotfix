@@ -59,24 +59,25 @@ Mybatis 将解析到 Mapper层的接口注解信息，以及Mapper.xml的配置�
 用于 在热修复类互相依赖的情况下，对依赖属性【即Class # Field】覆盖成热修复类时找出对应的热修复实现类。如果该文件
 不存在时，遇到这种情况，默认是获取依赖属性class类名修改成常规实现类名获取
 【如：czb.framework.hotfix.demo.service.UserService 默认改成 czb.framework.hotfix.demo.service.impl.UserServiceImpl】
-```java
-@Configuration
-public class HotFixConfig {
-
-    @Bean
-    public HotFix hotFix(){
-        HotFixParams hotFixProperties=new HotFixParams();
-        //本地文件加载地址
-        hotFixProperties.setLoadPath("E:\\Project\\Java\\OpenSource\\czb-spring-hotfix\\czb-spring-hotfix-demo\\hotfix");
-        //基础包名
-        hotFixProperties.setBasePackage("czb.framework.hotfix.demo");
-        //需要加载到AppClassLoader【父级ClassLoader】的包名
-        hotFixProperties.setShouldLoadInAppClassLoaderPackage(Arrays.asList(
-                "czb.framework.hotfix.demo.entity",
-                "czb.framework.hotfix.demo.vo.resq"));
-        return new HotFix(hotFixProperties);
-    }
-}
+## maven 配置
+该项目并没有放到maven的仓库，所以需要拉取本项目，在根目录下执行 `mvn clean install`.
+```xml
+       <dependency>
+            <groupId>czb.framework</groupId>
+            <artifactId>czb-spring-hotfix-starter</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+```
+## yml配置
+```yaml
+# 热修复
+hotFix:
+  enable: true # 开启热修复，只有开启，才可以进行热修复，开启后 czb.framework.hotfix.core.HotFix 会自动配置到 Spring 容器中 
+  base-package: czb.framework.hotfix.demo # 基础包名
+  load-path: E:\Project\Java\OpenSource\czb-spring-hotfix\czb-spring-hotfix-demo\hotfix # 本地文件加载地址
+  should-load-in-app-classLoader-package: # 需要加载到AppClassLoader【父级ClassLoader】的包名
+    - czb.framework.hotfix.demo.entity
+    - czb.framework.hotfix.demo.vo.resq
 ```
 ## 使用
 ```java
